@@ -33,6 +33,28 @@ async function dropTables() {
           location varchar(255) NOT NULL
         );
       `);
+      await client.query(`
+      CREATE TABLE posts (
+        id SERIAL PRIMARY KEY,
+        "authorId" INTEGER REFERENCES users(id),
+        title varchar(255) NOT NULL,
+        content TEXT NOT NULL,
+        active BOOLEAN DEFAULT true
+      );
+      `);
+      await client.query(`
+        CREATE TABLE tags (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) UNIQUE NOT NULL
+        );
+      `);
+      await client.query(`
+        CREATE TABLE post_tags (
+            "postId" INTEGER REFERENCES posts(id),
+            "tagId" INTEGER REFERENCES tags(id),
+            UNIQUE ("postId", "tagId")
+        );
+      `);
   
       console.log("Finished building tables!");
     } catch (error) {
