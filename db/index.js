@@ -76,6 +76,18 @@ async function createUser({
         }
     }
 
+    async function getAllTags() {
+        try {
+            const { rows } = await client.query(`
+            SELECT * FROM tags
+            `)
+            return rows;
+        }
+            catch (error) {
+                throw error;
+            }
+        }
+
     async function createTags(tagList) {
         if (tagList.length === 0) {
           return;
@@ -267,5 +279,6 @@ async function createUser({
     getUserById,
     getPostById,
     updatePost,
-    getPostsByTagName
+    getPostsByTagName,
+    getAllTags
 }
